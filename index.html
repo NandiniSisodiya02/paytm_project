@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8f5">
+    <meta name="description" content="Find the right metro line, interchange and platform across Noida and Delhi. Plan your journey with Footprints.">
+    <title>Footprints — Find your way through the metro</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/metro-data.js" defer></script>
+    <script src="/routing.js" defer></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="Footprints home">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M6 24c6-1 4-12 11-15 3-1 6 0 9 2M20 7l6 4-6 3M6 24l4-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="24" r="2" fill="currentColor"/></svg>
+          </span>
+          <span>Footprints<span class="brand-period">.</span></span>
+        </a>
+        <div class="sidebar-label">YOUR JOURNEY</div>
+        <nav class="nav-list" aria-label="Journey">
+          <a class="nav-link active" href="#planner"><span class="nav-icon" aria-hidden="true">⌖</span> Plan a trip</a>
+          <a class="nav-link" href="#map-panel"><span class="nav-icon" aria-hidden="true">⌁</span> Metro map</a>
+        </nav>
+        <div class="sidebar-note">
+          <span class="sidebar-note-icon" aria-hidden="true">✳</span>
+          <strong>New to the metro?</strong>
+          <p>We’ll break your trip down one interchange at a time. No guesswork.</p>
+        </div>
+        <div class="sidebar-bottom"><span class="live-dot"></span> Noida &amp; Delhi network <span class="coverage-tag">BETA</span></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong>Journey planner</strong></div>
+          <div class="topbar-actions">
+            <div id="location-status" class="location-status"><span class="location-dot"></span><span>Location not shared</span></div>
+            <button id="locate-button" class="button button-location" type="button"><span aria-hidden="true">⌖</span> Use my location</button>
+            <button id="stop-location-button" class="icon-button" type="button" aria-label="Stop sharing location" title="Stop sharing location" hidden>×</button>
+            <button class="avatar" type="button" aria-label="Guest profile">G</button>
+          </div>
+        </header>
+
+        <section id="planner" class="welcome-row">
+          <div>
+            <p class="eyebrow"><span id="current-date"></span><span class="eyebrow-dot"></span> YOUR CITY, YOUR WAY</p>
+            <h1>Every journey leaves a <span>Footprint.</span></h1>
+            <p class="welcome-copy">Tell us where you’re headed. We’ll show you exactly where to switch, which line to take, and how to get there.</p>
+          </div>
+          <div class="welcome-mark" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><path d="M17 77c15-1 12-39 34-52 9-5 20-4 32 3M68 21l17 7-13 13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="77" r="5" fill="currentColor"/><circle cx="83" cy="28" r="5" fill="currentColor"/></svg>
+          </div>
+        </section>
+
+        <section class="planner-card" aria-label="Plan your metro trip">
+          <div class="planner-heading">
+            <div><span class="planner-heading-icon" aria-hidden="true">↗</span><div><p class="eyebrow">LET’S GET YOU THERE</p><h2>Plan your journey</h2></div></div>
+            <span class="estimate-tag"><span></span> ROUTE ESTIMATES</span>
+          </div>
+          <div class="route-inputs">
+            <div class="input-stack">
+              <label for="pickup">FROM</label>
+              <div class="station-input-wrap">
+                <span class="station-marker marker-start" aria-hidden="true"></span>
+                <input id="pickup" list="station-options" autocomplete="off" placeholder="Choose a pickup station" aria-describedby="station-help">
+              </div>
+            </div>
+            <button id="swap-button" class="swap-button" type="button" aria-label="Swap pickup and destination" title="Swap stations">⇅</button>
+            <div class="input-stack">
+              <label for="dropoff">TO</label>
+              <div class="station-input-wrap">
+                <span class="station-marker marker-end" aria-hidden="true"></span>
+                <input id="dropoff" list="station-options" autocomplete="off" placeholder="Choose your destination">
+              </div>
+            </div>
+            <button id="find-route-button" class="button button-primary" type="button"><span>Find my route</span><span aria-hidden="true">→</span></button>
+          </div>
+          <datalist id="station-options"></datalist>
+          <div id="station-help" class="planner-foot"><span aria-hidden="true">✳</span> Search by station name · Try <button class="quick-route" type="button" data-from="Noida Sector 62" data-to="Lajpat Nagar">Noida Sector 62 to Lajpat Nagar</button></div>
+          <div id="planner-error" class="planner-error" role="alert" hidden></div>
+        </section>
+
+        <section id="map-panel" class="map-card" aria-label="Metro map and route">
+          <div class="map-header">
+            <div><p class="eyebrow">YOUR FOOTPRINT</p><h2 id="map-title">The city, at your pace.</h2></div>
+            <div class="map-header-right">
+              <span id="map-mode" class="map-mode"><span></span> NETWORK OVERVIEW</span>
+              <button id="center-map-button" class="icon-button map-control" type="button" title="Center map" aria-label="Center map">⌖</button>
+            </div>
+          </div>
+          <div class="map-stage">
+            <svg id="metro-map" viewBox="0 0 900 405" role="img" aria-label="Schematic metro map covering Noida and Delhi, with Blue, Pink, and Aqua lines"></svg>
+            <div id="map-tooltip" class="map-tooltip" hidden></div>
+            <div class="map-attribution">SCHEMATIC NETWORK · STATION LOCATIONS APPROXIMATE</div>
+          </div>
+          <div class="map-legend">
+            <span><i class="line-key blue-key"></i> Blue line</span>
+            <span><i class="line-key pink-key"></i> Pink line</span>
+            <span><i class="line-key aqua-key"></i> Aqua line</span>
+            <span id="footprint-legend" class="footprint-legend" hidden><i id="footprint-key" class="footprint-key"></i><span id="footprint-label">Your footprint</span></span>
+            <button id="show-network-button" class="text-button" type="button" hidden>Show full network</button>
+          </div>
+        </section>
+
+        <section id="route-panel" class="route-panel" aria-live="polite" hidden>
+          <div class="route-summary">
+            <div><p class="eyebrow">YOUR STEP-BY-STEP GUIDE</p><h2 id="route-title">Your route</h2><p id="route-subtitle" class="route-subtitle"></p></div>
+            <div class="route-summary-actions">
+              <div class="route-stats"><span id="route-time" class="route-time">—</span><span id="route-stops" class="route-stops">—</span></div>
+              <button id="start-journey-button" class="button button-start-journey" type="button"><span aria-hidden="true">⌖</span> Start journey</button>
+            </div>
+          </div>
+          <div id="route-steps" class="route-steps"></div>
+          <div class="route-disclaimer"><span aria-hidden="true">ⓘ</span> Estimated route for guidance. Check live DMRC/Aqua Line service updates before travelling.</div>
+        </section>
+
+        <footer class="page-footer"><span><strong>Footprints</strong> — made for the in-between.</span><span>Unofficial journey guide · Not affiliated with DMRC or NMRC</span></footer>
+      </main>
+    </div>
+  </body>
+</html>
