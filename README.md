@@ -1,37 +1,42 @@
 # Footprints
 
-**Every journey leaves a Footprint.** Footprints is a mobile-friendly metro journey planner concept for people navigating the Noida–Delhi network. Pick stations, get a line-by-line route with explicit interchange instructions, and optionally share your location to see where you are in relation to the route.
+**Every journey leaves a Footprint.** Footprints is a mobile-first Delhi–Noida metro navigation prototype that makes route changes easier to understand with a line-coloured map, a searchable station planner, and simple step-by-step directions.
 
-## Run it
+## Run locally
 
-Requires Node.js 18 or newer. From the project directory:
-
-```sh
-node server.js
-```
-
-Open <http://localhost:3000>. Location access works on localhost or an HTTPS deployment. Choose **Noida Sector 62 → Lajpat Nagar** for a quick Blue-to-Pink interchange demo; try **Noida Sector 62 → Pari Chowk** to see the Noida Sector 52–51 walk between the Blue and Aqua lines.
-
-Run tests with:
+Requires Node.js 20 or newer.
 
 ```sh
-node --test
+npm install
+npm run dev
 ```
 
-## What’s in the prototype
+Open the local URL printed by Vite. To create a production bundle:
 
-- Searchable pickup and destination station fields, plus a swap control.
-- A custom schematic Noida–Delhi map that draws animated, line-coloured footprint dots along the selected Blue, Pink, and Aqua route.
-- Route steps that call out the line, direction, stops, and where to change lines.
-- An optional GPS marker. **Use my location** finds the nearest station in the prototype dataset; **Start journey** keeps the location marker current while the trip is in progress. Location stays in the browser and is not sent to a server. Stop sharing at any time.
-- A service worker caches the app shell and curated station dataset for repeat/offline access. Routing does not rely on an external map or tiles.
+```sh
+npm run build
+npm run preview
+```
+
+Run the route-data tests with `npm test`.
+
+## Frontend structure
+
+- `src/App.jsx`: dashboard layout, route form, theme switch, GPS consent and journey state.
+- `src/components/StationCombobox.jsx`: accessible station autocomplete.
+- `src/components/FootprintsMap.jsx`: responsive schematic map and metro-coloured route footprint.
+- `src/components/JourneyTimeline.jsx`: vertical stop-by-stop boarding, interchange and exit instructions.
+- `src/utils/location.js`: distance calculations and GPS-to-route-stop matching.
+- `src/styles.css`: Tailwind v4 layers, responsive motion, class-based dark mode and shared theme tokens.
+- `metro-data.js` and `routing.js`: curated station graph and route selection.
+- `public/`: app icon, web manifest and offline service worker.
+
+## Deploy
+
+The app is a static Vite site with no server-side runtime. Push the repository to GitHub and import it into Vercel or Netlify; the included `vercel.json` and `netlify.toml` configure the production build (`npm run build`) and `dist` output directory. For any other static host, use the same build command and publish `dist/`.
+
+The GPS indicator switches to **Live GPS active** only after the traveller chooses journey tracking and grants browser permission. Location is used locally and is not sent to a server.
 
 ## Coverage and accuracy
 
-This is an early, curated network demo—not a complete or live metro navigation service. Station coverage focuses on Blue, Pink, and Aqua line corridors around Noida and eastern/central Delhi. Station coordinates, route geometry, interchange walking time, and trip duration are approximate. The map is schematic and is **not** a street map or turn-by-turn walking guide. Check official DMRC/NMRC sources for current station, service, interchange, accessibility, and platform information before travelling.
-
-The route engine minimizes ride stops with an interchange penalty; the displayed duration is a rough estimate, not live timetable data. The app is not affiliated with DMRC or NMRC.
-
-## Next steps for a real product
-
-Use an authoritative, regularly updated metro station/line dataset; add full-network route validation, live service alerts, station accessibility and exit details, and more accurate walking links. GPS journey progress should remain opt-in and be tested for battery, privacy, accessibility, and location accuracy. Publish only after validating route and interchange instructions with official sources and travellers unfamiliar with the network.
+This is a curated UI prototype, not a live transit service. Route coverage focuses on Blue, Pink and Aqua line corridors around Noida and eastern/central Delhi. Coordinates, map geometry and journey-time estimates are approximate. Platform numbers, gate assignments, live arrivals and service alerts are not included; the interface asks users to verify these on station signage rather than showing unverified details. GPS stop progress only advances near stations when the browser reports an accurate fix; GPS may be unavailable or inaccurate underground. Check official DMRC/NMRC sources before travelling. Footprints is not affiliated with DMRC or NMRC.

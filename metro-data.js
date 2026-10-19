@@ -1,5 +1,4 @@
-(function (root) {
-  const stations = [
+export const stations = [
     { id: "rajiv-chowk", name: "Rajiv Chowk", lat: 28.6328, lon: 77.2197 },
     { id: "barakhamba", name: "Barakhamba Road", lat: 28.6292, lon: 77.2245 },
     { id: "mandi-house", name: "Mandi House", lat: 28.6259, lon: 77.2345 },
@@ -72,7 +71,7 @@
     { id: "depot-station", name: "Depot Station", lat: 28.4874, lon: 77.4818 }
   ];
 
-  const lines = [
+export const lines = [
     {
       id: "blue",
       name: "Blue Line",
@@ -117,7 +116,7 @@
     }
   ];
 
-  const interchanges = [
+export const interchanges = [
     {
       from: "noida-sec-52",
       to: "noida-sec-51",
@@ -126,6 +125,5 @@
     }
   ];
 
-  root.FootprintsMetro = { stations, lines, interchanges };
-  if (typeof module !== "undefined" && module.exports) module.exports = root.FootprintsMetro;
-})(typeof globalThis !== "undefined" ? globalThis : this);
+export const metroData = { stations, lines, interchanges };
+export default metroData;
