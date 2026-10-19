@@ -1,5 +1,4 @@
-(function (root) {
-  function createRouter({ stations, lines, interchanges }) {
+export function createRouter({ stations, lines, interchanges }) {
     const stationById = new Map(stations.map(station => [station.id, station]));
     const stationByName = new Map(stations.map(station => [station.name.toLocaleLowerCase(), station]));
     const lineById = new Map(lines.map(line => [line.id, line]));
@@ -129,9 +128,5 @@
       };
     }
 
-    return { stationById, stationByName, lineById, findStation, shortestRoute, groupJourney, summarize };
-  }
-
-  root.FootprintsRouting = { createRouter };
-  if (typeof module !== "undefined" && module.exports) module.exports = { createRouter };
-})(typeof globalThis !== "undefined" ? globalThis : this);
+  return { stationById, stationByName, lineById, findStation, shortestRoute, groupJourney, summarize };
+}

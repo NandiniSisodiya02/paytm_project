@@ -1,7 +1,7 @@
-const assert = require("node:assert/strict");
-const { test } = require("node:test");
-const { stations, lines, interchanges } = require("../metro-data");
-const { createRouter } = require("../routing");
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { stations, lines, interchanges } from "../metro-data.js";
+import { createRouter } from "../routing.js";
 
 const router = createRouter({ stations, lines, interchanges });
 
